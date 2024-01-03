@@ -1,117 +1,73 @@
 
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Wrapper from "../components/Wrapper";
 import BikeDetailsPageCarousel from '../components/product/BikeDetailsPageCarousel'
 import RelatedProductCarousel from '../components/product/RelatedProductCarousel'
-import Footer from "../components/footer/Footer";
-
-// import { useDispatch } from "react-redux";
-// import { addToCart } from "@/store";
-// import { toast } from "react-toastify";
-// import "react-toastify/dist/ReactToastify.css";
+import Footer from "../components/footer/Footer"
+import { Link, useParams, useNavigate } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
+import { get_product } from '../store/reducers/homeReducer'
+import { add_to_cart, messageClear, add_to_wishlist } from '../store/reducers/cartReducer'
+import toast from 'react-hot-toast'
 
 const BikeDetailsPage = ({ params }) => {
-//   const dispatch = useDispatch();
-//   const notify = () => {
-//     toast.success("Success. Check your cart!", {
-//       position: "bottom-center",
-//       autoClose: 2000,
-//       hideProgressBar: false,
-//       closeOnClick: true,
-//       pauseOnHover: true,
-//       draggable: true,
-//       progress: undefined,
-//       theme: "dark",
-//     });
-//   };
+  const navigate = useNavigate()
+  const { slug } = useParams()
+  const dispatch = useDispatch()
+  const { product, relatedProducts,} = useSelector(state => state.home)
+  const { userInfo } = useSelector(state => state.auth)
+  const { errorMessage, successMessage } = useSelector(state => state.cart)
 
-  {
-    /* products data */
+
+  const [quantity, setQuantity] = useState(1)
+
+
+  const add_cart = () => {
+      if (userInfo) {
+          dispatch(add_to_cart({
+              userId: userInfo.id,
+              quantity,
+              productId: product._id
+          }))
+      } else {
+          navigate('/login')
+      }
   }
-  const product = 
-    {
-        name: 'Suzuki',
-        price: 450,
-        model: 'Suzuki',
-        brand: 'Toyota',
-        images: [
-            'http://localhost:3000/images/1.png',
-            'http://localhost:3000/images/3.png',
-            'http://localhost:3000/images/2.png',
-            'http://localhost:3000/images/1.png',
-            'http://localhost:3000/images/3.png',
-            'http://localhost:3000/images/2.png',
 
-        ],
-        abs:'okey',
-        fi:'okey',
-        regYear: 2034,
-        ml:564,
-        taxValid:'yes'
+  const add_wishlist = () => {
+      if (userInfo) {
+          dispatch(add_to_wishlist({
+              userId: userInfo.id,
+              productId: product._id,
+              name: product.name,
+              price: product.price,
+              image: product.productImages[0],
+              slug: product.slug,
+              model: product.model,
+              brand: product.brand
+          }))
+      } else {
+          navigate('/login')
+      }
 
-    }
+  }
 
+  useEffect(() => {
+      dispatch(get_product(slug))
+  }, [slug])
+  useEffect(() => {
+      if (errorMessage) {
+          toast.error(errorMessage)
+          dispatch(messageClear())
+      }
+      if (successMessage) {
+          toast.success(successMessage)
+          dispatch(messageClear())
+      }
+  }, [errorMessage, successMessage])
 
+  
 
-const products = [
-    
-    {
-        name: 'Suzuki',
-        price: 450,
-        model: 'Suzuki',
-        brand: 'Toyota',
-        image: 'http://localhost:3000/images/1.png'
-    },
-    {
-        name: 'Suzuki',
-        price: 450,
-        model: 'Suzuki',
-        brand: 'Toyota',
-        image: 'http://localhost:3000/images/1.png'
-    },
-    {
-        name: 'Suzuki',
-        price: 450,
-        model: 'Suzuki',
-        brand: 'Toyota',
-        image: 'http://localhost:3000/images/1.png'
-    },
-    {
-        name: 'Suzuki',
-        price: 450,
-        model: 'Suzuki',
-        brand: 'Toyota',
-        image: 'http://localhost:3000/images/1.png'
-    },
-    {
-        name: 'Suzuki',
-        price: 450,
-        model: 'Suzuki',
-        brand: 'Toyota',
-        image: 'http://localhost:3000/images/1.png'
-    },
-    {
-        name: 'Suzuki',
-        price: 450,
-        model: 'Suzuki',
-        brand: 'Toyota',
-        image: 'http://localhost:3000/images/1.png'
-    },
-    {
-        name: 'Suzuki',
-        price: 450,
-        model: 'Suzuki',
-        brand: 'Toyota',
-        image: 'http://localhost:3000/images/1.png'
-    },
-    {
-        name: 'Suzuki',
-        price: 450,
-        model: 'Suzuki',
-        brand: 'Toyota',
-        image: 'http://localhost:3000/images/1.png'
-    },
-]
   
 
   return (
@@ -121,7 +77,7 @@ const products = [
         <div className="flex flex-col lg:flex-row md:px-10  gap-[50px] lg:gap-[100px] ">
           {/* left coloum start */}
           <div className="w-full md:w-auto flex-[1.5] max-w-[500px] lg:max-w-full mx-auto lg:mx-0 ">
-            <BikeDetailsPageCarousel data={product.images} />
+            <BikeDetailsPageCarousel data={product?.productImages} />
           </div>
           {/* left coloum End */}
 
@@ -144,9 +100,9 @@ const products = [
               Brand:{product?.brand}
             </div>
 
-            {/* mile age*/}
+            {/* Model */}
             <div className="text-[12px] md:text-md my-1 py-1 px-1 border border-background-500 font-medium text-neutral-500 bg-primary-500 md:w-[150px] text-left ">
-              Mileage: {product?.model}
+              Model: {product?.model}
             </div>
             </div>
 
@@ -219,16 +175,7 @@ const products = [
             <div className="flex justify-between mb-10">
               <button
                 className="w-[180px] h-[50px] mr-2 py-1 md:py-2 rounded-md lg:mr-5 xl:mr-[0] bg-secondary-500 text-primary-100 text-sm md:text-lg font-medium transition-transform  active:scale-95 mb-3 hover:bg-primary-500 hover:text-secondary-500"
-                // onClick={() => {
-                //   dispatch(
-                //     addToCart({
-                //       ...data?.[0],
-
-                //       oneProductPrice: data?.[0]?.attributes?.price,
-                //     })
-                //   );
-                //   notify();
-                // }}
+                onClick={add_cart}
               >
                 Add to Garage
               </button>
@@ -237,7 +184,7 @@ const products = [
 
               {/* Add to wishlist add */}
 
-              <button className="w-[180px] h-[50px] py-1  md:py-2 rounded-md bg-secondary-500 text-primary-100 text-sm md:text-lg font-medium transition-transform  active:scale-95 mb-3 hover:bg-primary-500 hover:text-secondary-500  ">
+              <button onClick={add_wishlist} className="w-[180px] h-[50px] py-1  md:py-2 rounded-md bg-secondary-500 text-primary-100 text-sm md:text-lg font-medium transition-transform  active:scale-95 mb-3 hover:bg-primary-500 hover:text-secondary-500  ">
                 Add to Wishlist
               </button>
             </div>
@@ -251,7 +198,7 @@ const products = [
               </div>
 
               <div className="markdown text-md mb-5 ">
-                {product?.name}
+                {product?.description}
               </div>
             </div>
             {/* Product description Add */}
@@ -261,7 +208,7 @@ const products = [
 
         {/* related product curousel */}
         <div className="border-background-500 border px-5 py-10 mt-10">
-          <RelatedProductCarousel products={products} />
+          <RelatedProductCarousel add_cart={add_cart} products={relatedProducts} />
         </div>
         {/* related product curousel */}
       </Wrapper>

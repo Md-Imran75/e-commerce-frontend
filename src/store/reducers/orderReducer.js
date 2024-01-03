@@ -5,7 +5,7 @@ import {
 import api from '../../api/api'
 
 export const place_order = createAsyncThunk(
-    'order/confirm_order',
+    'order/place_order',
     async ({
         price,
         products,
@@ -14,11 +14,11 @@ export const place_order = createAsyncThunk(
         userId,
         navigate,
         items
-    }) => {
+    } , {fulfillWithValue , rejectWithValue}) => {
         try {
             const {
                 data
-            } = await api.post('/home/order/confirm-order', {
+            } = await api.post('/order/place-order', {
                 price,
                 products,
                 booking_fee,
@@ -27,17 +27,17 @@ export const place_order = createAsyncThunk(
                 navigate,
                 items,
             })
-            navigate('/payment', {
+            navigate('/successful-order', {
                 state: {
-                    price: booking_fee,
+                    price: price + booking_fee,
                     items,
                     orderId: data.orderId
                 }
             })
         
-            return true
+            return fulfillWithValue(data)
         } catch (error) {
-            console.log(error.message)
+           return rejectWithValue(error.response.data)
             
         }
     }
@@ -99,7 +99,12 @@ export const orderReducer = createSlice({
 extraReducers: (builder) => {
   builder
     // ... (existing cases for customer_register and customer_login)
-
+    .addCase(place_order.fulfilled, (state, { payload }) => {
+        state.successMessage = payload.message;
+      })
+      .addCase(place_order.rejected, (state, { payload }) => {
+        state.errorMessage = payload ? payload.error : 'An error occurred';
+      })
     // Add cases for order-related actions
     .addCase(get_orders.fulfilled, (state, action) => {
       state.myOrders = action.payload.orders;

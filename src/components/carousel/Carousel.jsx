@@ -41,7 +41,7 @@ const CarouselItem = () => {
                             >
                                 {
                                     [1, 2, 3,].map((img, i) => <div className='block' key={i}>
-                                        <img className='rounded-md w-full xl:h-[350px]' src={`http://localhost:3000/images/${img}.png`} alt="carousel images" />
+                                        <img className=' w-full xl:h-[350px]' src={`http://localhost:3000/images/${img}.png`} alt="carousel images" />
                                     </div>)
                                 }
                             </Carousel>

@@ -1,10 +1,8 @@
 import { Link, useNavigate } from 'react-router-dom'
 import { useEffect, useState } from 'react'
-// import {useDispatch , useSelector} from 'react-redux'
-import { PropagateLoader } from 'react-spinners'
-// import { overrideStyleForButtonLoader } from '../../utils/utils'
-// import { messageClear, seller_register } from '../../store/reducers/authReducers'
-// import  {toast} from 'react-hot-toast'
+import {useDispatch , useSelector} from 'react-redux'
+import { messageClear, customer_register } from '../store/reducers/authReducer'
+import  {toast} from 'react-hot-toast'
 import Footer from '../components/footer/Footer'
 
 const InitialState = {
@@ -19,13 +17,14 @@ const InitialState = {
 
 const Register = () => {
 
-    //   const dispatch = useDispatch()
-    //   const navigate = useNavigate()
+      const dispatch = useDispatch()
+      const navigate = useNavigate()
+      const [user, setUser] = useState(InitialState)
 
-    //  const {loader , errorMessage , successMessage} = useSelector(state => state.auth)
 
+      const { loader, successMessage, errorMessage, userInfo } = useSelector(state => state.auth)
 
-    const [user, setUser] = useState(InitialState)
+          console.log(userInfo)
 
     const handler = (e) => {
         setUser({
@@ -34,28 +33,30 @@ const Register = () => {
         })
     }
 
-    //   const submit = (e) => {
-    //    e.preventDefault()
-    //    dispatch(seller_register(user))
-    //    setUser(InitialState)
-    //   }
+    const submit = (e) => {
+        e.preventDefault()
+        dispatch(customer_register(user))
+        setUser(InitialState)
+    }
 
-    //   useEffect(() => {
-    //     if(successMessage){
-    //       toast.success(successMessage)
-    //       dispatch(messageClear())
-    //       navigate('/login')
-    //     }
-    //     if(errorMessage){
-    //       toast.error(errorMessage)
-    //       dispatch(messageClear())
-    //     }
-    //   },[successMessage  , errorMessage])
+    useEffect(() => {
+        if (successMessage) {
+            toast.success(successMessage)
+            dispatch(messageClear())
+        }
+        if(errorMessage){
+            toast.error(errorMessage)
+            dispatch(messageClear())
+        }
+        if(userInfo){
+            navigate('/')
+        }
+    }, [successMessage,errorMessage])
 
-    const loader = true
+
 
     return (
-        <div>
+        <div className='m-5'>
             <section className="text-black-500 my-20 ">
 
 
@@ -65,7 +66,7 @@ const Register = () => {
                         <h2 className="text-gray-900 text-lg font-medium title-font mb-5">SIGN UP</h2>
                     </div>
 
-                    <form>
+                    <form onSubmit={submit}>
                         <div className="relative mb-2">
                             <label htmlFor="name">Full Name</label>
                             <input type="text" id="name" name="name" onChange={handler} value={user.name} required placeholder='Md Imran Khan' className="w-full text-sm bg-white rounded border    py-1 px-3 leading-8 transition-colors duration-200 ease-in-out" />
@@ -98,15 +99,12 @@ const Register = () => {
                         </div>
 
                         <button disabled={loader ? true : false} className="text-white bg-secondary-500 text-primary-100 w-full  bg-indigo-500 border-0 py-2 uppercase px-8 focus:outline-none hover:bg-indigo-600 font-bold rounded text-lg">
-                            {/* {
-           loader ? <PropagateLoader color='#ffffff' cssOverride={overrideStyleForButtonLoader}/>  : 'Sing Up'
-         } */}
-                            Register
+                            Singup
                         </button>
 
                     </form>
 
-                    <p className="text-xs  mt-2">Already have an account? <Link to={'/login'} >Login</Link> </p>
+                    <p className="text-xs  mt-2">Already have an account? <Link className='text-secondary-400 font-bold' to={'/login'} >Login</Link> </p>
                 </div>
 
 

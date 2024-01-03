@@ -6,9 +6,7 @@ import AllProducts from '../components/allProducts/AllProducts'
 const AllBikes = () => {
     return (
         <div>
-            <Wrapper>
-                <Carousel />
-            </Wrapper>
+           <Carousel />
             <AllProducts/>
             <Footer />
         </div>

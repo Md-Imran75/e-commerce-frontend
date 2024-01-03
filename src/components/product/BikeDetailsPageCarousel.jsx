@@ -18,9 +18,7 @@ const BikeDetailsPageCarousel = ({data}) => {
                         key={i}
                         src={img}
                         alt={'img'}
-                        loading="lazy"
-                        height='full'
-                        width='full'
+                        className="w-full h-full"
                     />
                 ))}
              

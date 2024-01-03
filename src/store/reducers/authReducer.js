@@ -14,6 +14,30 @@ export const customer_register = createAsyncThunk(
     }
 )
 
+export const customer_change_password = createAsyncThunk(
+    'auth/customer_change_password',
+    async (info, { rejectWithValue, fulfillWithValue }) => {
+        try {
+            const { data } = await api.post('/customer-change-password', info, { withCredentials: true });
+            return fulfillWithValue(data);
+        } catch (error) {
+            return rejectWithValue(error.response.data);
+        }
+    }
+);
+
+export const forget_password = createAsyncThunk(
+    'auth/forget_password',
+    async (info, { rejectWithValue, fulfillWithValue }) => {
+        try {
+            const { data } = await api.post('/forget-password', info, { withCredentials: true });
+            return fulfillWithValue(data);
+        } catch (error) {
+            return rejectWithValue(error.response.data);
+        }
+    }
+);
+
 export const customer_login = createAsyncThunk(
     'auth/customer_login',
     async (info, { rejectWithValue, fulfillWithValue }) => {
@@ -85,7 +109,29 @@ export const authReducer = createSlice({
             state.successMessage = action.payload.message;
             state.loader = false;
             state.userInfo = userInfo;
-          });
+          })
+          .addCase(customer_change_password.pending, (state, _) => {
+            state.loader = true;
+        })
+        .addCase(customer_change_password.rejected, (state, action) => {
+            state.loader = false;
+            state.errorMessage = action.payload ? action.payload.error : 'An error occurred';
+        })
+        .addCase(customer_change_password.fulfilled, (state, action) => {
+            state.loader = false;
+            state.successMessage = action.payload ? action.payload.message : 'An error occurred';
+        })
+        .addCase(forget_password.pending, (state, _) => {
+            state.loader = true;
+        })
+        .addCase(forget_password.rejected, (state, action) => {
+            state.loader = false;
+            state.errorMessage = action.payload ? action.payload.error : 'An error occurred';
+        })
+        .addCase(forget_password.fulfilled, (state, action) => {
+            state.loader = false;
+            state.successMessage = action.payload ? action.payload.message : 'An error occurred';
+        })
       },
       
 })

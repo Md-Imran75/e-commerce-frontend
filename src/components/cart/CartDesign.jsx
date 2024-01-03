@@ -1,81 +1,18 @@
 import { useState , useMemo } from 'react'
 import CartPageDesign from './CartPageDesign'
-import { BsCart } from 'react-icons/bs'
-// import { useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
+import { MdElectricBike,} from "react-icons/md"
+import { useTranslation } from 'react-i18next';
 
 const CartDesign = () => {
-  const [cartOpen , setCartOpen] = useState(false)
-//   const {cart} = useSelector((state => state.cart))
-  
-//   const subTotal = useMemo(() => {
-//     return cart.reduce((total , val) => total + val.attributes.price , 0 )
-//   }, [cart])
 
-const cart = [
-    {
-        name: 'Suzuki',
-        price: 450,
-        model: 'Suzuki',
-        brand: 'Toyota',
-        image: 'http://localhost:3000/images/1.png'
-    },
-    {
-        name: 'Suzuki',
-        price: 110,
-        model: 'Suzuki',
-        brand: 'Toyota',
-        image: 'http://localhost:3000/images/1.png'
-    },
-    {
-        name: 'Suzuki',
-        price: 650,
-        model: 'Suzuki',
-        brand: 'Toyota',
-        image: 'http://localhost:3000/images/1.png'
-    },
-    {
-        name: 'Suzuki',
-        price: 850,
-        model: 'Suzuki',
-        brand: 'Toyota',
-        image: 'http://localhost:3000/images/1.png'
-    },
-    {
-        name: 'Suzuki',
-        price: 480,
-        model: 'Suzuki',
-        brand: 'Toyota',
-        image: 'http://localhost:3000/images/1.png'
-    },
-    {
-        name: 'Suzuki',
-        price: 350,
-        model: 'Suzuki',
-        brand: 'Toyota',
-        image: 'http://localhost:3000/images/1.png'
-    },
-    {
-        name: 'Suzuki',
-        price: 250,
-        model: 'Suzuki',
-        brand: 'Toyota',
-        image: 'http://localhost:3000/images/1.png'
-    },
-    {
-        name: 'Suzuki',
-        price: 1050,
-        model: 'Suzuki',
-        brand: 'Toyota',
-        image: 'http://localhost:3000/images/1.png'
-    },
-    {
-        name: 'Suzuki',
-        price: 4565,
-        model: 'Suzuki',
-        brand: 'Toyota',
-        image: 'http://localhost:3000/images/1.png'
-    },
-]
+  const { t } = useTranslation()
+
+  const [cartOpen , setCartOpen] = useState(false)
+  const { cart_product_count , price} = useSelector(state => state.cart)
+  
+  
+
 
 
   return (
@@ -86,30 +23,30 @@ const cart = [
     >
 
         <div className='mt-3 ml-9 text-2xl'>
-           <BsCart/> 
+           <MdElectricBike/> 
         </div>
         
         <div className='text-sm mt-3 px-1  text-secondary-400 bg-primary-400'>
         <div className='ml-3' >
 
         <div>
-        {cart.length < 1 && 
+        {cart_product_count < 1 && 
          <div>
-          {`0 Bike`}
+           0 {t('bike')}
          </div>
          } 
 
-         {cart.length === 1 && 
+         {cart_product_count === 1 && 
           <div>
              <div>
-          {`${cart.length} Bike`}
+          {`${cart_product_count} ${t('bike')}`}
          </div>
          </div>
          } 
-         {cart.length > 1 && 
+         {cart_product_count > 1 && 
          <div>
          <div>
-          {`${cart.length} Bikes`}
+          {`${cart_product_count} ${t('bike')}s`}
          </div>
           </div>
          }
@@ -120,7 +57,7 @@ const cart = [
 
         <div className='text-sm mt-3 px-1  text-secondary-500 bg-primary-400'>
         <p className='ml-3 text-[8px]' >
-           &#2547;100
+           &#2547;{price}
         </p>
         </div>
         </div>
