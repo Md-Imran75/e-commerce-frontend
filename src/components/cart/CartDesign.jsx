@@ -46,7 +46,7 @@ const CartDesign = () => {
          {cart_product_count > 1 && 
          <div>
          <div>
-          {`${cart_product_count} ${t('bike')}s`}
+          {`${cart_product_count} ${t('bike')}`}
          </div>
           </div>
          }

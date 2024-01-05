@@ -22,7 +22,7 @@ const AllProducts = () => {
 
     const activeProducts = products.filter((p) => p.status === 'active');
 
-
+    
 
     useEffect(() => {
         dispatch(price_range_product())
@@ -41,7 +41,6 @@ const AllProducts = () => {
             setModel('')
         }
     }
-    console.log(model)
     useEffect(() => {
         dispatch(
             query_products({
@@ -51,8 +50,8 @@ const AllProducts = () => {
                 sortPrice,
                 pageNumber
             })
-        )
-    }, [state.values[0], state.values[1], model, pageNumber, sortPrice])
+        );
+    }, [state.values[0], state.values[1], model, sortPrice, pageNumber, dispatch]);
 
 
 
@@ -129,9 +128,12 @@ const AllProducts = () => {
                                     <ProductsDesign products={activeProducts} filter={filter} />
                                 </div>
                                 <div>
-                                    {
+                                
+                                
                                         <Pagination pageNumber={pageNumber} setPageNumber={setPageNumber} totalItem={totalProduct} perPage={perPage} showItem={Math.floor(totalProduct / perPage)} />
-                                    }
+                                    
+
+                                    
                                 </div>
                             </div>
                         </div>

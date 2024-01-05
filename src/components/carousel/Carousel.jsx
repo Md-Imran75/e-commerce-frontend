@@ -26,7 +26,7 @@ const CarouselItem = () => {
 
    
     return (
-        <div className='w-full '>
+        <div className='w-full max-w-[1280px]   mx-auto '>
             <div className=' mx-2 md:mx-5'>
                 <div className='w-full flex flex-wrap '>
                     <div className='w-full'>
@@ -40,8 +40,8 @@ const CarouselItem = () => {
                                 renderButtonGroupOutside={true}
                             >
                                 {
-                                    [1, 2, 3,].map((img, i) => <div className='block' key={i}>
-                                        <img className=' w-full xl:h-[350px]' src={`http://localhost:3000/images/${img}.png`} alt="carousel images" />
+                                    [1, 2, 3,]?.map((img, i) => <div className='block' key={i}>
+                                        <img className=' w-full xl:h-[400px]' src={`http://localhost:3000/images/${img}.png`} alt="carousel images" />
                                     </div>)
                                 }
                             </Carousel>

@@ -60,6 +60,10 @@ const Dashboard = () => {
                                         <span className='text-xl'><RiProductHuntLine /></span>
                                         <Link to='/dashboard/my-orders' className='block'>My Orders</Link>
                                     </li>
+                                    <li className='flex justify-start items-center gap-2 py-2'>
+                                        <span className='text-xl'><TfiLock /></span>
+                                        <Link to='/dashboard/profile' className='block'>Profile</Link>
+                                    </li>
 
                                     <li className='flex justify-start items-center gap-2 py-2'>
                                         <span className='text-xl'><TfiLock /></span>

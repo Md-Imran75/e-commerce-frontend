@@ -6,7 +6,6 @@ import AllProducts from '../components/allProducts/AllProducts'
 const AllBikes = () => {
     return (
         <div>
-           <Carousel />
             <AllProducts/>
             <Footer />
         </div>

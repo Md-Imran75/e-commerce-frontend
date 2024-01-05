@@ -25,6 +25,7 @@ import ChangePassword from './components/dashboard/ChangePassword'
 import ForgetPassword from './pages/ForgetPassword'
 import Wishlist from './pages/Wishlist'
 import ConditionPage from './pages/ConditionPage'
+import Profile from './pages/Profile'
 
 const App = () => {
   const dispatch = useDispatch()
@@ -63,6 +64,7 @@ const App = () => {
             <Route path='' element={<Index />} />
             <Route path='my-orders' element={<MyOrders/>} />
             <Route path='order/details/:orderId' element={<OrderDetails />} />
+            <Route path='profile' element={<Profile />} />
             <Route path='change-password' element={<ChangePassword />} />
           </Route>
         </Route>

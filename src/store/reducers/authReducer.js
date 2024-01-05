@@ -60,6 +60,18 @@ const decodeToken = (token) => {
         return ''
     }
 }
+export const customer_profile_image_upload = createAsyncThunk(
+    'auth/customer_profile_image_upload',
+    async (image, { rejectWithValue, fulfillWithValue }) => {
+        console.log(image)
+        try {
+            const { data } = await api.post('/customer-profile-image-upload', image, { withCredentials: true })
+            return fulfillWithValue(data)
+        } catch (error) {
+            return rejectWithValue(error.response.data)
+        }
+    }
+)
 
 export const authReducer = createSlice({
     name: 'auth',
@@ -131,6 +143,19 @@ export const authReducer = createSlice({
         .addCase(forget_password.fulfilled, (state, action) => {
             state.loader = false;
             state.successMessage = action.payload ? action.payload.message : 'An error occurred';
+        })
+        .addCase(customer_profile_image_upload.fulfilled, (state, {payload}) => {
+            state.loader = false
+            state.userInfo = payload.userInfo
+            state.successMessage = payload.message;
+        })
+        .addCase(customer_profile_image_upload.rejected, (state, action) => {
+            state.loader = false;
+            state.errorMessage = action.payload ? action.payload.error : 'An error occurred';
+        })
+
+        .addCase(customer_profile_image_upload.pending, (state, _) => {
+            state.loader = true;
         })
       },
       

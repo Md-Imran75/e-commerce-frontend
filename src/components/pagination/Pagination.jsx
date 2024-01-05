@@ -20,21 +20,26 @@ const Pagination = ({ pageNumber, setPageNumber, totalItem, perPage, showItem })
     }
     const createBtn = () => {
         const btns = []
-
-        for (let i = startPage; i < endPage; i++) {
+    
+        for (let i = startPage; i <= endPage; i++) {
             btns.push(
-                <li onClick={() => setPageNumber(i)} className={`
-                    ${pageNumber === i ? 'bg-secondary-400 text-white-100' : 'bg-primary-300   text-black-500'} w-[33px] h-[33px] rounded-full flex justify-center items-center cursor-pointer`
-                }>
+                <li
+                    key={i}
+                    onClick={() => setPageNumber(i)}
+                    className={`
+                        ${pageNumber === i ? 'bg-secondary-400 text-white-100' : 'bg-primary-300   text-black-500'} w-[33px] h-[33px] rounded-full flex justify-center items-center cursor-pointer`
+                    }
+                >
                     {i}
                 </li>
             )
         }
         return btns
     }
+    
 
     return (
-        <ul className='flex gap-3'>
+        <ul className='flex  gap-3'>
             {
                 pageNumber > 1 && <li onClick={() => setPageNumber(pageNumber - 1)} className='w-[33px] h-[33px] rounded-full flex justify-center bg-secondary-400  items-center  text-white-100 cursor-pointer'>
                     <BsChevronDoubleLeft />
